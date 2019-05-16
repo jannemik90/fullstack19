@@ -9,13 +9,13 @@ const Header = (props) => {
     )
 }
 
-const Content = (props) => {
-    
+const Content = (props) => {  
+    const parts = props.parts
     return(
         <div>
-            <Part part={props.part1} exercises={props.exercises1} />
-            <Part part={props.part2} exercises={props.exercises2} />
-            <Part part={props.part3} exercises={props.exercises3} />
+            <Part part={parts[0].name} exercises={parts[0].exercises} />
+            <Part part={parts[1].name} exercises={parts[1].exercises} />
+            <Part part={parts[2].name} exercises={parts[2].exercises} />
         </div>
     )
 }
@@ -29,37 +29,37 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
+    const parts = props.parts
     return (
         <div>
             <p>
-                Yhteensä {props.exercises1 + props.exercises2 + props.exercises3}
+                Yhteensä {parts[0].exercises + parts[1].exercises + parts[2].exercises}
             </p>
         </div>
     )
 }
 
 const App = () => {
-  const course = 'Half Stack -sovelluskehitys'
-  const part1 = {
-    name: 'Reactin perusteet',
-    exercises: 10
-  }
-  const part2 = {
-    name: 'Tiedonvälitys propseilla',
-    exercises: 7
-  }
-  const part3 = {
-    name: 'Komponenttien tila',
-    exercises: 14
-  }
+    const course = 'Half Stack -sovelluskehitys'
+    const parts = [
+      {
+        name: 'Reactin perusteet',
+        exercises: 10
+      },
+      {
+        name: 'Tiedonvälitys propseilla',
+        exercises: 7
+      },
+      {
+        name: 'Komponenttien tila',
+        exercises: 14
+      }
+    ]
     return (
     <>
       <Header course={course} />  
-      <Content part1={part1.name} part2={part2.name} part3={part3.name} 
-        exercises1={part1.exercises} exercises2={part2.exercises} 
-        exercises3={part3.exercises} />
-      <Total exercises1={part1.exercises} exercises2={part2.exercises} 
-      exercises3={part3.exercises} />
+      <Content parts={parts} />
+      <Total parts={parts}/>
     </>
     )
   }
