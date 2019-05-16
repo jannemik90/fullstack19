@@ -1,0 +1,8 @@
+selain->palvelin: HTTP https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note over selain:
+lomakkeeseen määritelty tapahtumankäsittelijä
+lisää uuden muistiinpanon ja lähettää sen palvelimelle
+tapahtumankäsittelijä myös renderöi sivu uudelleen
+uusi muistiinpano on myös lisätty notes muuttujaan, joten se näkyy
+end note
