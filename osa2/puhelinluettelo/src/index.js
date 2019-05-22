@@ -7,7 +7,6 @@ import personService from './services/persons'
 
 
 
-
 const Number = ({person, onClick}) => 
 <div>
   <p>{person.name} {person.number} </p> 
@@ -98,6 +97,11 @@ const App = () => {
       setNewName('')
       setNewNumber('')
       addNotification(`Lisätty henkilo ${addedPerson.name}`)
+    })
+    .catch(error => {
+      console.log(error.response.data)
+      addNotification(error.response.data.error, true)
+
     })
  }
 
