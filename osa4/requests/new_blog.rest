@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 
 {
-   "title": "Blogi2",
-   "author": "Minä2",
-   "url": "www.blogi2.fi",
-   "likes": 29
+   "title": "Blogi4",
+   "author": "Minä4",
+   "url": "www.blogi4.fi",
+   "likes": 88
 }
