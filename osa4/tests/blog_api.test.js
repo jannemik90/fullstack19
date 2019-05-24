@@ -131,6 +131,46 @@ test('is possible update one blog', async () => {
 })
 
 
+test('username cant be empty', async () => {
+    const newUser = {username: "", name:"Kalle", password:"fsafsass"}
+
+    const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)  
+        
+        expect(result.body.error).toContain('`username` is required')
+
+})
+
+test('username must be longer than 3', async () => {
+    const newUser = {username: "Ka", name:"Kalle", password:"fsafsass"}
+
+    const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)    
+
+        expect(result.body.error).toContain('is shorter than the minimum allowed length')
+
+})
+
+test('username must be unique', async () => {
+    const newUser = {username: "Kalle", name:"Kalle", password:"fsafsass"}
+
+        await api
+        .post('/api/users')
+        .send(newUser) 
+
+    const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)   
+
+        expect(result.body.error).toContain('`username` to be unique')
+
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
