@@ -42,9 +42,10 @@ blogRouter.get('/', (request, response) => {
     const id = request.params.id
     const newBlog = {likes: blog.likes}
     console.log(id)
+    console.log(request.body)
     try{
-       await Blog.findByIdAndUpdate(id, newBlog, { new: true })
-       response.json(blog.toJSON())
+       const updated = await Blog.findByIdAndUpdate(id, newBlog, { new: true })
+       response.json(updated.toJSON())
     } catch(exception) {
       next(exception)
     }
