@@ -5,10 +5,9 @@ import { connect } from 'react-redux'
 
 const AnecdoteList = (props) => {
 
-    const vote = (id, message) => {
-        props.addVote(id)
-        props.setMessage(message)
-        setTimeout(() => props.deleteMessage(), 5000)
+    const vote = (anecdote ,message ) => {
+        props.addVote(anecdote)
+        props.setMessage(message, 5)
       }
       
     return(
@@ -21,7 +20,7 @@ const AnecdoteList = (props) => {
                 </div>
                 <div>
                     has {anecdote.votes}
-                    <button onClick={() => vote(anecdote.id, `You voted '${anecdote.content}'`)}>vote</button>
+                    <button onClick={() => vote(anecdote, `You voted '${anecdote.content}'`)}>vote</button>
                 </div>
                 </div>
             )}
@@ -30,6 +29,7 @@ const AnecdoteList = (props) => {
 }
 
 const anecdotesToShow = ({anecdotes, filter}) => {
+    console.log('show anecdotes', anecdotes)
     return anecdotes.filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))
     .sort((a, b ) => b.votes - a.votes)
         

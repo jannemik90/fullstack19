@@ -2,12 +2,14 @@ import React from 'react'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import { connect } from 'react-redux'
 
+
 const AddAnecdoteForm = (props) => {
 
-    const addNewAnecdote = (event) => {
+    const addNewAnecdote = async (event) => {
         event.preventDefault()
-        console.log('value', event.target.anecdote.value)
-        props.addAnecdote(event.target.anecdote.value)
+        const content = event.target.anecdote.value
+        event.target.anecdote.value = ''
+        props.addAnecdote(content)
     }
 
     return(
