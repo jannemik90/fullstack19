@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
-import blogService from '../services/blogs'
-const Blog = ({ blog, updateLikes, removeBlog, username }) => {
-  const [showAll, setShowAll] = useState(false)
+import React from 'react'
+import { connect } from 'react-redux'
+import { updateBlog, deleteBlog } from '../reducers/blogsReducer'
+import { Redirect, withRouter } from 'react-router-dom'
+
+const Blog = (props) => {
   const blogStyle = {
     padding: '20px',
     border: 'solid',
@@ -9,18 +11,25 @@ const Blog = ({ blog, updateLikes, removeBlog, username }) => {
     borderWidth: 1,
     margin: '10px'
   }
+
+  const blogById = (id) => {
+    return props.blogs.find(blog => blog.id === id)
+  }
+  const blog = blogById(props.id)
+
+  if(blog === undefined) {
+    return null
+  }
+
   const addLike = async () => {
+    console.log('BLOGI FUNKTIOSSA', blog)
     const updatedBlog = {
-      user: blog.user.id,
-      likes: blog.likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url
+      ...blog,
+      likes: blog.likes + 1
     }
     try{
-      const updated = await blogService.addLike(updatedBlog, blog.id)
-      updateLikes(updated)
-      setShowAll(true)
+      props.updateBlog(updatedBlog)
+      console.log('klikattu')
     } catch(exception) {
       console.log(exception)
     }
@@ -31,39 +40,49 @@ const Blog = ({ blog, updateLikes, removeBlog, username }) => {
       const wantDelete = window.confirm(`Haluatko varmasti poistaa blogin ${blog.title} ?`)
       console.log('halutaanko',wantDelete)
       if(wantDelete){
-        await blogService.remove(blog.id)
-        removeBlog(blog.id)
+        props.deleteBlog(blog.id)
+        props.history.push('/')
       }
     } catch(exception) {
       console.log(exception)
     }
   }
 
-  const toggleShowAll = () => setShowAll(!showAll)
 
-  const showRemoveButton = username === blog.user.username
+
+
+
+  const showRemoveButton = props.user.username === blog.user.username
     ? <button onClick={remove}>Poista</button>
     : null
 
-  if(showAll){
-    return(
-      <div className='mainBlog' style={blogStyle} onClick={toggleShowAll}>
-        <div>{blog.title} kirjoittajalta {blog.author}</div>
-        <a href={blog.url}>{blog.url}</a>
-        <div>{blog.likes} tykkäykset <button onClick={addLike}>Like</button></div>
-        <div>Lisännyt {blog.user.name}</div>
-        {showRemoveButton}
-      </div>
-    )
-
-  }
 
   return(
-    <div className='mainBlog' style={blogStyle} onClick={toggleShowAll}>
-      <p>{blog.title} kirjoittajalta {blog.author}</p>
+    <div className='mainBlog' style={blogStyle}>
+      <h1>{blog.title} kirjoittajalta {blog.author}</h1>
+      <a href={blog.url}>{blog.url}</a>
+      <p><strong>{blog.likes} tykkäykset <button onClick={addLike}>Like</button></strong></p>
+      <h5>Lisännyt {blog.user.name}</h5>
+      {showRemoveButton}
     </div>
   )
 
 }
 
-export default Blog
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs,
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+  updateBlog,
+  deleteBlog
+}
+const BlogWithHistory = withRouter(Blog)
+const ConnectedBlog = connect(mapStateToProps, mapDispatchToProps)(BlogWithHistory)
+
+
+export default ConnectedBlog

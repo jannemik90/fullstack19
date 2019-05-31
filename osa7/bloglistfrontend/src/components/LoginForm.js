@@ -1,23 +1,47 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { useField } from '../hooks/index'
+import loginService from '../services/login'
+import blogsService from '../services/blogs'
+import { connect } from 'react-redux'
+import { addUser } from '../reducers/loginReducer'
 
 
 
 
+const LoginForm = (props) => {
+  const username = useField('text')
+  const password = useField('password')
 
+  const handleLogin = async(event) => {
+    event.preventDefault()
+    try{
+      const user = await loginService.login({ username: username.inputData.value, password: password.inputData.value })
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+      props.addUser(user)
+      blogsService.setToken(user.token)
+      // addNotification(`Tervetuloa ${user.name}`, false)
+      username.reset()
+      password.reset()
+    } catch (exception) {
+      // addNotification(`Error: ${exception}`, true)
+      console.log(exception)
+    }
+  }
 
-const LoginForm = ({ handleLogin, usernameInput, passwordInput }) => {
   return (
     <div>
+      <h3>Kirjaudu sisään</h3>
       <h4>Syötä kirjautumistiedot</h4>
       <form onSubmit={handleLogin}>
         <div>
                     Käyttäjänimi
-          <input {...usernameInput}/>
+          <input {...username.inputData}/>
         </div>
         <div>
                      Salasana
-          <input{...passwordInput}/>
+          <input{...password.inputData}/>
         </div>
         <div>
           <button type='submit'>Kirjaudu</button>
@@ -27,10 +51,8 @@ const LoginForm = ({ handleLogin, usernameInput, passwordInput }) => {
   )
 }
 
-LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  usernameInput: PropTypes.object.isRequired,
-  passwordInput: PropTypes.object.isRequired
-}
+const ConnectedLoginForm = connect(null, { addUser })(LoginForm)
 
-export default LoginForm
+export default ConnectedLoginForm
+
+
