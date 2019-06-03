@@ -25,7 +25,7 @@ const App = (props) => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if(loggedUserJSON){
+    if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       console.log('user',user)
       props.addUser(user)
@@ -35,7 +35,7 @@ const App = (props) => {
 
   return (
     <Router>
-      <Route exact path ='/' render={ () =>
+      <Route exact path ="/" render={ () =>
         <div>
           <Notification />
           { props.user === null ?
@@ -50,17 +50,17 @@ const App = (props) => {
           }
         </div>
       }/>
-      <Route exact path ='/users' render={ () =>
+      <Route exact path ="/users" render={ () =>
         <Layout>
           <UserList />
         </Layout>
       }/>
-      <Route exact path='/users/:id' render={({ match }) =>
+      <Route exact path="/users/:id" render={({ match }) =>
         <Layout>
           <User id={(match.params.id)} />
         </Layout>
       } />
-      <Route exact path='/blogs/:id' render={({ match }) =>
+      <Route exact path="/blogs/:id" render={({ match }) =>
         <Layout>
           <Blog id={(match.params.id)} />
         </Layout>

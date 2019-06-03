@@ -4,19 +4,19 @@ import { connect } from 'react-redux'
 import { addComment } from '../reducers/blogsReducer'
 import styled from 'styled-components'
 
-const CreateCommentForm =  (props) => {
+const Input = styled.input`
+background: white;
+padding: 20px;
+border: 1px solid #035a73;
+`
+const Button = styled.button`
+background: #035a73;
+padding: 20px;
+border: 1px solid #035a73;
+color: white;
+`
 
-  const Input = styled.input`
-  background: white;
-  padding: 20px;
-  border: 1px solid #035a73;
-`
-  const Button = styled.button`
-  background: #035a73;
-  padding: 20px;
-  border: 1px solid #035a73;
-  color: white;
-`
+const CreateCommentForm =  (props) => {
 
   const commentText = useField('text')
 
@@ -42,8 +42,8 @@ const CreateCommentForm =  (props) => {
   return(
     <div>
       <form onSubmit={handleAddComment}>
-        <Input {...commentText.inputData} />
-        <Button type="submit">Lisää kommentti</Button>
+        <Input {...commentText.inputData} id="comment" />
+        <Button type="submit" id="submit">Lisää kommentti</Button>
       </form>
     </div>
   )

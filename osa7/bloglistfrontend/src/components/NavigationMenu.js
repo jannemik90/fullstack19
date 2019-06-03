@@ -40,7 +40,7 @@ const NavigationMenu = (props) => {
   return(
     <NavigationBar>
       <Link to="/" ><NavigationItem>Blogs</NavigationItem></Link>
-      <Link to="/users" ><NavigationItem >Users</NavigationItem></Link>
+      <Link to="/users" ><NavigationItem id="usersNavigation" >Users</NavigationItem></Link>
       <NavigationItem >{props.user.name} logged in</NavigationItem>
       <NavigationItem ><CancelButton onClick={logout}>Logout</CancelButton></NavigationItem>
     </NavigationBar>

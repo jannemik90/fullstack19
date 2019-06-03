@@ -5,9 +5,6 @@ import blogsService from '../services/blogs'
 import { connect } from 'react-redux'
 import { addUser } from '../reducers/loginReducer'
 
-
-
-
 const LoginForm = (props) => {
   const username = useField('text')
   const password = useField('password')
@@ -37,14 +34,14 @@ const LoginForm = (props) => {
       <form onSubmit={handleLogin}>
         <div>
                     Käyttäjänimi
-          <input {...username.inputData}/>
+          <input {...username.inputData} id="username"/>
         </div>
         <div>
                      Salasana
-          <input{...password.inputData}/>
+          <input {...password.inputData} id="password" />
         </div>
         <div>
-          <button type='submit'>Kirjaudu</button>
+          <button type="submit" id="login">Kirjaudu</button>
         </div>
       </form>
     </div>
