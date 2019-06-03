@@ -7,7 +7,9 @@ const jwt = require('jsonwebtoken')
 
 blogRouter.get('/', (request, response) => {
     Blog
-      .find({}).populate('user', {username: 1, name: 1})
+      .find({})
+      .populate('user', { username: 1, name: 1 })
+      .populate('comments', {text: 1})
       .then(blogs => {
         response.json(blogs.map(blog => blog.toJSON()))
       })
