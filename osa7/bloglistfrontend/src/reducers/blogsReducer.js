@@ -1,15 +1,37 @@
 import blogService from '../services/blogs'
 
+
+const updateComments = (blogs, id, comment) => {
+  blogs.forEach(blog => {
+    if(blog.id === id){
+      blog.comments.push({ id: comment.id, text: comment.text })
+    }
+  })
+  console.log('Muutetut blogit', blogs)
+  return blogs
+}
+
+const updateLikes = (blogs, id) => {
+  blogs.forEach(blog => {
+    if(blog.id === id) {
+      blog.likes = blog.likes + 1
+    }
+  })
+  return blogs
+}
+
 const blogsReducer = (state = [], action) => {
   switch( action.type ) {
   case 'GET_ALL' :
     return action.blogs
   case 'ADD_ONE' :
     return [...state, action.content]
-  case 'UPDATE_BLOG':
-    return  [...state].map(blog => blog.id === action.content.id ? action.content : blog)
+  case 'ADD_LIKE':
+    return  updateLikes([...state], action.content.id)
   case 'DELETE_BLOG' :
     return[...state].filter(blog => blog.id !== action.id)
+  case 'ADD_COMMENT':
+    return  updateComments([...state], action.content.blog, action.content)
   default:
     return state
   }
@@ -18,6 +40,7 @@ const blogsReducer = (state = [], action) => {
 export const getAllBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
+    console.log('blogit', blogs)
     dispatch({
       type: 'GET_ALL',
       blogs
@@ -46,14 +69,24 @@ export const deleteBlog = (id) => {
   }
 }
 
-export const updateBlog = (blog) => {
-  console.log('Updated1', blog)
+export const addLike = (blog) => {
   return async dispatch => {
     const updatedBlog = await blogService.addLike(blog, blog.id)
-    console.log('Updated2', updatedBlog)
     dispatch({
-      type: 'UPDATE_BLOG',
+      type: 'ADD_LIKE',
       content: updatedBlog
+    })
+  }
+}
+
+export const addComment = (comment) => {
+  console.log('Lisätty kommentti', comment)
+  return async dispatch => {
+    const updatedComment = await blogService.addComment(comment, comment.blogId)
+    console.log('vastaus kommenttiin', updatedComment)
+    dispatch({
+      type: 'ADD_COMMENT',
+      content: updatedComment
     })
   }
 }

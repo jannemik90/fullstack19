@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { addMessage } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogsReducer'
 import Togglable from '../components/Togglable'
+import styled from 'styled-components'
 
 const AddBlogForm = (props) => {
   const title = useField('text')
@@ -13,6 +14,17 @@ const AddBlogForm = (props) => {
 
   const addBlogFormRef = React.createRef()
 
+  const Input = styled.input`
+  background: white;
+  padding: 10px;
+  border: 1px solid #035a73;
+`
+  const Button = styled.button`
+  background: #035a73;
+  padding: 10px;
+  border: 1px solid #035a73;
+  color: white;
+`
 
   const handleAddBlog = async (event) => {
     event.preventDefault()
@@ -28,9 +40,9 @@ const AddBlogForm = (props) => {
       url.reset()
       props.addBlog(addedBlog)
       props.addMessage({
-        message: `Uusi blogi ${addedBlog.title} kirjottajalta ${addedBlog.author} on lisätty`
-        , alert : false })
-    }catch(exception){
+        message: `Uusi blogi ${addedBlog.title} kirjottajalta ${addedBlog.author} on lisätty`,
+        alert : false })
+    }catch(exception) {
       props.addMessage({
         message: `Virhe ${exception}`,
         alert: true })
@@ -39,23 +51,23 @@ const AddBlogForm = (props) => {
   }
 
   return(
-    <Togglable buttonText='Lisää uusi blogi' ref={addBlogFormRef}>
+    <Togglable buttonText="Lisää uusi blogi" ref={addBlogFormRef}>
       <form onSubmit={handleAddBlog}>
         <h3>Create new blog</h3>
         <div>
                   Title
-          <input {...title.inputData}/>
+          <Input {...title.inputData}/>
         </div>
         <div>
                   Author
-          <input {...author.inputData}/>
+          <Input {...author.inputData}/>
         </div>
         <div>
                   Url
-          <input {...url.inputData}/>
+          <Input {...url.inputData}/>
         </div>
         <div>
-          <button type='submit'>Luo blogi</button>
+          <Button type="submit">Luo blogi</Button>
         </div>
       </form>
     </Togglable>

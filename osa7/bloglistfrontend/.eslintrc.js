@@ -4,10 +4,11 @@ module.exports = {
         "es6": true,
         "jest/globals": true
     },
-    "extends": [ 
-        "eslint:recommended",
+    "extends": [
+        "netflix", 
         "plugin:react/recommended"
     ],
+    
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true

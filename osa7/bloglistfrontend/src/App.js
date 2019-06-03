@@ -33,7 +33,6 @@ const App = (props) => {
     }
   }, [])
 
-  const orderedBlogs = props.blogs.sort((a,b) => b.likes - a.likes)
   return (
     <Router>
       <Route exact path ='/' render={ () =>

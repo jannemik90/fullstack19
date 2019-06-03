@@ -3,12 +3,6 @@ import NavigationMenu from './NavigationMenu'
 
 const Layout = (props) => {
 
-  if( props.user === null){
-    return null
-  }
-
-
-
   return(
     <div>
       <NavigationMenu />
