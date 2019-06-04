@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server')
 
-const authors = [
+let authors = [
   {
     name: 'Robert Martin',
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -84,15 +84,86 @@ const books = [
 ]
 
 const typeDefs = gql`
+
+  type Book {
+      title: String!
+      published: Int!
+      author: String!
+      id: ID!
+      genres: [String!]!
+  }
+
+  type Author {
+      name: String!
+      id: ID!
+      born: Int
+      bookCount: Int!
+  }
+
   type Query {
+      bookCount: Int!
+      authorCount: Int!
+      allBooks(author: String, genre: String): [Book!]!
+      allAuthors: [Author!]!
+      findBooksByAuthor(name: String!): Int!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String!]!
+    ) : Book
+      editAuthor(
+        name: String!
+        setBornTo: Int!
+        ) : Author
   }
 `
 
 const resolvers = {
   Query: {
+      bookCount: () => books.length,
+      authorCount: () => authors.length,
+      allBooks: (root, args) => {
+        let foundedBooks = books
+        if(args.author){
+          foundedBooks = foundedBooks.filter(b => b.author === args.author)
+        }
+        if(args.genre){
+          foundedBooks = foundedBooks.filter(b => b.genres.includes(args.genre))
+        }
+        return foundedBooks
+      },
+      allAuthors: () => authors
+  },
+  Author: {
+      bookCount: (root) =>  books.filter(b => b.author === root.name).length
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      let author = authors.find(author => author.name === args.author)
+      if(!author){
+       author = {name: args.author}
+       authors.push(author)
+      }
+      const book = { title: args.title, author: author.name, published: args.published, genres: args.genres}
+      books.push(book)
+      return book
+    },
+    editAuthor: (root, args) => {
+      const foundedAuthor = authors.find(author => author.name === args.name)
+      if(!foundedAuthor){
+        return null
+      }
+      const newAuthor = {...foundedAuthor, born: args.setBornTo}
+      authors = authors.map( author => author.name === newAuthor.name ? newAuthor : author )
+      return newAuthor
+    }
+
   }
 }
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -101,3 +172,4 @@ const server = new ApolloServer({
 server.listen().then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
+
