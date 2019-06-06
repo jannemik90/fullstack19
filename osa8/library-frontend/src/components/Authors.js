@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AddBornForm from './AddBornForm'
 
 const Authors = (props) => {
@@ -7,9 +7,14 @@ const Authors = (props) => {
     return null
   }
   const authors = props.result.data.allAuthors
+  console.log('Authors', authors)
   if( props.result.loading ){
     return <div>Loading...</div>
   }
+
+  const editAuthorsForm = props.loggedIn
+  ? <AddBornForm authors={authors} updateAuthor={props.updateAuthor}/>
+  : null  
 
   return (
     <div>
@@ -34,7 +39,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <AddBornForm authors={authors} updateAuthor={props.updateAuthor}/>
+      {editAuthorsForm}
     </div>
   )
 }

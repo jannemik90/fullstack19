@@ -20,7 +20,7 @@ const NewBook = (props) => {
     try{
       await props.addBook({variables: {title,author,published,genres}})
     } catch(exception){
-      console.log(exception)
+      console.log('Virhe', exception)
     }
     
     setTitle('')

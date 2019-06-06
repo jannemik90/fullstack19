@@ -7,6 +7,7 @@ import Select from 'react-select';
 const AddBornForm = (props) => {
     const [name, setName] = useState('')
     const [birthYear, setBirthYear] = useState('')
+    
 
     const options = props.authors.map(a => {
         return(
@@ -14,14 +15,11 @@ const AddBornForm = (props) => {
         )
       })
 
-    console.log(options)
-    console.log(name)
-    console.log(birthYear)
     const handleUpdateAuthor = async (e) => {
       e.preventDefault()
       await props.updateAuthor({variables: {name: name.value ,setBornTo: birthYear}})
-      setName('')
       setBirthYear('')
+      setName('')
     }
 
     const handleNameChange = selected =>{
@@ -40,6 +38,7 @@ const AddBornForm = (props) => {
                 <div>
                     Birthyear:    
                     <input 
+                    value={birthYear}
                     type='text' 
                     onChange={({ target }) => setBirthYear(Number(target.value))}                    
                     />
